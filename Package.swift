@@ -38,12 +38,12 @@ let package = Package(
         .target(
             name: "Nimbus",
             dependencies: ["MozillaRustComponents", "Glean"],
-            path: "external/application-services/components/nimbus/ios"
+            path: "generated/nimbus"
         ),
         .target(
             name: "CrashTest",
             dependencies: ["MozillaRustComponents"],
-            path: "external/application-services/components/crashtest/ios"
+            path: "generated/crashtest"
         ),
         // TODO: other components will go here over time.
         //.target(
