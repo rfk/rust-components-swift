@@ -9,30 +9,31 @@ let package = Package(
         .library(name: "Viaduct", targets: ["Viaduct"]),
         .library(name: "Nimbus", targets: ["Nimbus"]),
         .library(name: "CrashTest", targets: ["CrashTest"]),
-        .library(name: "Logins", targets: ["Logins"]),
-        .library(name: "FxAClient", targets: ["FxAClient"]),
+        // TODO: more of our components here, once they support M1 builds.
+        //.library(name: "Logins", targets: ["Logins"]),
+        //.library(name: "FxAClient", targets: ["FxAClient"]),
     ],
     dependencies: [
         // TODO: ship Glean via this same bundle?
         .package(name: "Glean", url: "https://github.com/mozilla/glean-swift", from: "39.0.4"),
-        .package(name: "SwiftKeychainWrapper", url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1")
+        // TODO: this external dependency is required for FxAClient,
+        // leaving it here as an example for now.
+        //.package(name: "SwiftKeychainWrapper", url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1")
     ],
     targets: [
         .target(
-            // TODO: we should make a proper package for this.
             name: "Sync15",
-            path: "external/application-services/megazords/ios",
-            sources: ["SyncUnlockInfo.swift"]
+            path: "external/application-services/components/sync15/ios"
         ),
         .target(
             name: "RustLog",
             dependencies: ["MozillaRustComponents"],
-            path: "external/application-services/megazords/ios/RustLog"
+            path: "external/application-services/components/rc_log/ios"
         ),
         .target(
             name: "Viaduct",
             dependencies: ["MozillaRustComponents"],
-            path: "external/application-services/megazords/ios/Viaduct"
+            path: "external/application-services/components/viaduct/ios"
         ),
         .target(
             name: "Nimbus",
@@ -44,23 +45,29 @@ let package = Package(
             dependencies: ["MozillaRustComponents"],
             path: "external/application-services/components/crashtest/ios"
         ),
-        .target(
-            name: "Logins",
-            dependencies: ["MozillaRustComponents", "Sync15"],
-            path: "external/application-services/components/logins/ios"
-        ),
-        .target(
-            name: "FxAClient",
-            dependencies: ["MozillaRustComponents", "SwiftKeychainWrapper"],
-            path: "external/application-services/components/fxa-client/ios"
-        ),
+        // TODO: other components will go here over time.
+        //.target(
+        //    name: "Logins",
+        //    dependencies: ["MozillaRustComponents", "Sync15"],
+        //    path: "external/application-services/components/logins/ios"
+        //),
+        //.target(
+        //    name: "FxAClient",
+        //    dependencies: ["MozillaRustComponents", "SwiftKeychainWrapper"],
+        //    path: "external/application-services/components/fxa-client/ios"
+        //),
         .binaryTarget(
             name: "MozillaRustComponents",
-            // For local testing, you can point at an (unzipped) XCFramework that's part of the repo.
-            //path: "./MozillaRustComponents.xcframework"
+            //
             // For release artifacts, reference the MozillaRustComponents as a URL with checksum.
-            url: "https://github.com/rfk/rust-components-swift/releases/download/0.2.0/MozillaRustComponents.xcframework.zip",
-            checksum: "8efc6ebb4123763a2721e116440fdf40a6f44a1887d187c0c0507d41aad04570"
+            //
+            url: "https://111955-129966583-gh.circle-artifacts.com/0/dist/MozillaRustComponents.xcframework.zip",
+            checksum: "f6807476ab4dd850290f4f87850719dfb9601deaee42b202ff8860480bdf1a42"
+            //
+            // For local testing, you can point at an (unzipped) XCFramework that's part of the repo.
+            // Note that you have to actually check it in and make a tag for it to work correctly.
+            //
+            //path: "./MozillaRustComponents.xcframework"
         )
     ]
 )
