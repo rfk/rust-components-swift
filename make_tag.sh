@@ -42,4 +42,4 @@ git add "$THIS_DIR/generated"
 # Create the tag
 
 git commit -a -m "Version $TAG"
-git tag $FORCE 0.3.0
+git tag $FORCE "$TAG"
